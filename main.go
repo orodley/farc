@@ -7,8 +7,8 @@ import (
 
 func main() {
 	app := cli.NewApp()
-	app.Name = "far"
-	app.Usage = "file archiver"
+	app.Name = "farc"
+	app.Usage = "file archiver & compressor"
 	app.Action = func(c *cli.Context) {
 		println("foo")
 	}
