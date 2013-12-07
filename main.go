@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/codegangsta/cli"
+	"github.com/orodley/farc/farc"
 	"os"
 )
 
@@ -20,6 +21,7 @@ var commands = []cli.Command{
 		Name:      "list",
 		ShortName: "ls",
 		Usage:     "list the contents of an archive",
+		Action:    farc.ListArchive,
 	},
 	{
 		Name:      "add",
