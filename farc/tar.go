@@ -7,7 +7,7 @@ import (
 )
 
 type TarArchive struct {
-	reader tar.Reader
+	tar.Reader
 }
 
 func newTarArchive(filename string) (Archive, error) {
@@ -22,7 +22,19 @@ func newTarArchive(filename string) (Archive, error) {
 // Methods satisfying Archive
 
 func (tarArchive *TarArchive) NextFile() (io.Reader, FileInfo, error) {
-	return nil, nil, nil
+	header, err := tarArchive.Next()
+	if err != nil {
+		return nil, nil, err
+	}
+
+	afi := AllFileInfo{
+		name:    header.Name,
+		size:    header.Size,
+		mode:    os.FileMode(header.Mode),
+		modTime: header.ModTime,
+	}
+
+	return tarArchive, &afi, nil
 }
 
 func (tarArchive *TarArchive) NewFile(FileInfo) (io.Reader, error) {
