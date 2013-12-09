@@ -7,7 +7,7 @@ import "path"
 func NewArchive(filename string) (Archive, error) {
 	ext := path.Ext(filename)
 	switch ext {
-	case "tar":
+	case ".tar":
 		tarArchive, err := newTarArchive(filename)
 		if err != nil {
 			return nil, err
