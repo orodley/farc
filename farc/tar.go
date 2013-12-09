@@ -21,11 +21,11 @@ func newTarArchive(filename string) (Archive, error) {
 
 // Methods satisfying Archive
 
-func (tarArchive *TarArchive) NextFile() (io.Reader, os.FileInfo, error) {
+func (tarArchive *TarArchive) NextFile() (io.Reader, FileInfo, error) {
 	return nil, nil, nil
 }
 
-func (tarArchive *TarArchive) NewFile(os.FileInfo) (io.Reader, error) {
+func (tarArchive *TarArchive) NewFile(FileInfo) (io.Reader, error) {
 	return nil, nil
 }
 
