@@ -3,6 +3,7 @@ package farc
 import (
 	"fmt"
 	"github.com/codegangsta/cli"
+	"io"
 )
 
 // ListArchive implements the "list"/"ls" command
@@ -18,5 +19,12 @@ func ListArchive(c *cli.Context) {
 		return
 	}
 
-	fmt.Println(archive)
+	for {
+		_, fi, err := archive.NextFile()
+		if err == io.EOF {
+			break
+		}
+
+		fmt.Println(fi.Name())
+	}
 }
