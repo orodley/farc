@@ -10,7 +10,8 @@ import (
 type Archive interface {
 	// NextFile advances to the next file, returning a reader that
 	// can be used to read data from it, and an os.FileInfo object
-	// containing metadata about it
+	// containing metadata about it.
+	// Once the last file in the archive is reached, error should be io.EOF
 	NextFile() (io.Reader, FileInfo, error)
 
 	// NewFile adds a new file to the archive with metadata as given in
