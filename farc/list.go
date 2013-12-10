@@ -23,6 +23,9 @@ func ListArchive(c *cli.Context) {
 		_, fi, err := archive.NextFile()
 		if err == io.EOF {
 			break
+		} else if err != nil {
+			fmt.Println(err)
+			return
 		}
 
 		fmt.Println(fi.Name())
