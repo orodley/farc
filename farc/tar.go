@@ -27,14 +27,7 @@ func (tarArchive *TarArchive) NextFile() (io.Reader, FileInfo, error) {
 		return nil, nil, err
 	}
 
-	afi := AllFileInfo{
-		name:    header.Name,
-		size:    header.Size,
-		mode:    os.FileMode(header.Mode),
-		modTime: header.ModTime,
-	}
-
-	return tarArchive, &afi, nil
+	return tarArchive, makeAllFileInfo(header.FileInfo()), nil
 }
 
 func (tarArchive *TarArchive) NewFile(FileInfo) (io.Reader, error) {

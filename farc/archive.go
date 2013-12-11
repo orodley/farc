@@ -47,6 +47,18 @@ type AllFileInfo struct {
 	modTime time.Time
 }
 
+// makeAllFileInfo takes an os.FileInfo and converts it into a farc.FileInfo.
+// All that needs to be done is copy over all methods but Sys() into the
+// appropriate fields
+func makeAllFileInfo(ofi os.FileInfo) *AllFileInfo {
+	return &AllFileInfo{
+		name:    ofi.Name(),
+		size:    ofi.Size(),
+		mode:    ofi.Mode(),
+		modTime: ofi.ModTime(),
+	}
+}
+
 func (a *AllFileInfo) Name() string {
 	return a.name
 }
