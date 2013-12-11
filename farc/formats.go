@@ -1,6 +1,7 @@
 package farc
 
 import (
+	"compress/bzip2"
 	"compress/gzip"
 	"errors"
 	"fmt"
@@ -30,6 +31,8 @@ func NewArchive(filename string) (Archive, error) {
 			if err != nil {
 				return nil, err
 			}
+		case "bz2":
+			reader = bzip2.NewReader(reader)
 		case "tar":
 			tarArchive, err := newTarArchive(reader)
 			if err != nil {
