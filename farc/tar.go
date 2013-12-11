@@ -3,20 +3,14 @@ package farc
 import (
 	"archive/tar"
 	"io"
-	"os"
 )
 
 type TarArchive struct {
 	tar.Reader
 }
 
-func newTarArchive(filename string) (Archive, error) {
-	file, err := os.Open(filename)
-	if err != nil {
-		return nil, err
-	}
-
-	return &TarArchive{*tar.NewReader(file)}, nil
+func newTarArchive(reader io.Reader) (Archive, error) {
+	return &TarArchive{*tar.NewReader(reader)}, nil
 }
 
 // Methods satisfying Archive
