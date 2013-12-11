@@ -3,7 +3,6 @@ package farc
 import (
 	"compress/bzip2"
 	"compress/gzip"
-	"errors"
 	"fmt"
 	"io"
 	"os"
@@ -23,7 +22,7 @@ func NewArchive(filename string) (Archive, error) {
 	// a terminal one (e.g. zip, tar) we return the appropriate Archive.
 	// If along the way we find a non-archive, compression format (e.g. gz,
 	// bz2), we wrap the reader with the reader for that format and continue
-	exts := Exts(filename)
+	exts, base := Exts(filename)
 	for _, ext := range exts {
 		switch ext {
 		case "gz":
@@ -45,19 +44,26 @@ func NewArchive(filename string) (Archive, error) {
 		}
 	}
 
-	// TODO: Handle non-archive compressed files here
-	// We should create an archive type that handles this by returning the
-	// reader when NextFile() is first called and then returning io.EOF
-	return nil, errors.New("Non-archive compressed files are not supported yet")
+	// Non-archive compressed file
+	fileInfo, err := file.Stat()
+	if err != nil {
+		return nil, err
+	}
+	afi := makeAllFileInfo(fileInfo)
+	afi.name = base
+	return newSFA(reader, afi), nil
 }
 
 // Exts is like path.Ext, but it detects if there are multiple extentions
 // nested on top of eachother, and returns a slice of all of them.
+// It also returns the name minus all extensions as the second return value.
 // The slice is ordered from outer to inner, e.g.:
-//  Exts("foo.tar.gz") => { "gz", "tar" }
-func Exts(filename string) []string {
+//  Exts("foo.tar.gz") => [ gz tar ], "foo"
+func Exts(filename string) ([]string, string) {
 	base := path.Base(filename)
-	exts := strings.Split(base, ".")[1:]
+	exts := strings.Split(base, ".")
+	minusExts := exts[0]
+	exts = exts[1:]
 	for i := 0; i < len(exts)/2; i++ {
 		otherIndex := len(exts) - i - 1
 
@@ -66,5 +72,5 @@ func Exts(filename string) []string {
 		exts[otherIndex] = tmp
 	}
 
-	return exts
+	return exts, minusExts
 }
