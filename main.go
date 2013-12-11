@@ -36,9 +36,5 @@ func main() {
 	app.Name = "farc"
 	app.Usage = "file archiver & compressor"
 	app.Commands = commands
-	app.Action = func(c *cli.Context) {
-		println("foo")
-	}
-
 	app.Run(os.Args)
 }
