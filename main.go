@@ -11,6 +11,7 @@ var commands = []cli.Command{
 		Name:      "extract",
 		ShortName: "x",
 		Usage:     "extract files from the archive",
+		Action:    farc.ExtractArchive,
 	},
 	{
 		Name:      "make",
