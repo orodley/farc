@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/codegangsta/cli"
+	"github.com/orodley/cli"
 	"github.com/orodley/farc/farc"
 	"os"
 )

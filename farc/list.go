@@ -2,7 +2,7 @@ package farc
 
 import (
 	"fmt"
-	"github.com/codegangsta/cli"
+	"github.com/orodley/cli"
 	"io"
 )
 
