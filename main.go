@@ -31,10 +31,15 @@ var commands = []cli.Command{
 	},
 }
 
+var flags = []cli.Flag{
+	cli.BoolFlag{"verbose, v", "be more verbose"},
+}
+
 func main() {
 	app := cli.NewApp()
 	app.Name = "farc"
 	app.Usage = "file archiver & compressor"
 	app.Commands = commands
+	app.Flags = flags
 	app.Run(os.Args)
 }

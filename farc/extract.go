@@ -20,6 +20,12 @@ func ExtractArchive(c *cli.Context) {
 		return
 	}
 
+	verbose := c.GlobalBool("verbose")
+
+	if verbose {
+		fmt.Println("Extracting", c.Args()[0])
+	}
+
 	for {
 		reader, fi, err := archive.NextFile()
 		if err == io.EOF {
@@ -27,6 +33,10 @@ func ExtractArchive(c *cli.Context) {
 		} else if err != nil {
 			fmt.Println(err)
 			return
+		}
+
+		if verbose {
+			fmt.Println(" ", fi.Name())
 		}
 
 		if IsDir(fi) {
