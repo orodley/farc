@@ -39,6 +39,18 @@ func NewArchive(filename string) (Archive, error) {
 			} else {
 				return tarArchive, nil
 			}
+		case "zip":
+			stat, err := file.Stat()
+			if err != nil {
+				return nil, err
+			}
+
+			zipArchive, err := newZipArchive(reader, stat.Size())
+			if err != nil {
+				return nil, err
+			} else {
+				return zipArchive, nil
+			}
 		default:
 			return nil, fmt.Errorf("Unsupported format `%s'", ext)
 		}
