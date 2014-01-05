@@ -62,7 +62,7 @@ func ExtractArchive(c *cli.Context) {
 
 			// Make sure all its parent directories exist
 			if !ex {
-				os.MkdirAll(dir, 0770)
+				os.MkdirAll(dir, defaultPerm)
 			}
 
 			file, err := os.OpenFile(fi.Name(), flags, fi.Mode())

@@ -37,7 +37,7 @@ func (zipArchive *ZipArchive) NextFile() (io.Reader, FileInfo, error) {
 	}
 
 	modTime := convertDosTime(file.ModifiedDate, file.ModifiedTime)
-	mode := os.FileMode(0770) // default value - zip doesn't save permissions
+	mode := os.FileMode(defaultPerm)
 	// This seems to be the only way to tell if a file is a directory in zips
 	if strings.HasSuffix(file.Name, "/") {
 		mode |= os.ModeDir

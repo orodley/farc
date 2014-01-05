@@ -6,6 +6,10 @@ import (
 	"time"
 )
 
+const (
+	defaultPerm = 0770 // Permissions to use when none specified
+)
+
 // Archive provides a uniform format for manipulating archives
 type Archive interface {
 	// NextFile advances to the next file, returning a reader that
