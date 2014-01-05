@@ -25,6 +25,15 @@ type Archive interface {
 
 	// Write writes the archive out to a Writer
 	Write(io.Writer) error
+
+	// Close closes the underlying file, if backed by one
+	Close() error
+}
+
+// Closer is for passing to new archive objects, so that they can close the
+// underlying data source on Close(). This will usually be an os.File
+type Closer interface {
+	Close() error
 }
 
 // FileInfo is the os.FileInfo - Sys()

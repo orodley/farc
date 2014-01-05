@@ -20,6 +20,7 @@ func ExtractArchive(c *cli.Context) {
 		fmt.Println(err)
 		return
 	}
+	defer archive.Close()
 
 	verbose := c.GlobalBool("verbose")
 

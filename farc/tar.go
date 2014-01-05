@@ -7,10 +7,11 @@ import (
 
 type TarArchive struct {
 	tar.Reader
+	closer Closer
 }
 
-func newTarArchive(reader io.Reader) (Archive, error) {
-	return &TarArchive{*tar.NewReader(reader)}, nil
+func newTarArchive(reader io.Reader, closer Closer) (Archive, error) {
+	return &TarArchive{*tar.NewReader(reader), closer}, nil
 }
 
 // Methods satisfying Archive
@@ -30,4 +31,8 @@ func (tarArchive *TarArchive) NewFile(FileInfo) (io.Reader, error) {
 
 func (tarArchive *TarArchive) Write(io.Writer) error {
 	return nil
+}
+
+func (tarArchive *TarArchive) Close() error {
+	return tarArchive.closer.Close()
 }

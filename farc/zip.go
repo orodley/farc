@@ -9,16 +9,17 @@ import (
 
 type ZipArchive struct {
 	zip.Reader
+	closer   Closer
 	currFile int
 }
 
-func newZipArchive(reader io.Reader, size int64) (Archive, error) {
+func newZipArchive(reader io.Reader, closer Closer, size int64) (Archive, error) {
 	zipReader, err := zip.NewReader(makeReaderAt(reader), size)
 	if err != nil {
 		return nil, err
 	}
 
-	return &ZipArchive{*zipReader, 0}, nil
+	return &ZipArchive{*zipReader, closer, 0}, nil
 }
 
 // Methods satisfying Archive
@@ -58,4 +59,8 @@ func (zipArchive *ZipArchive) NewFile(FileInfo) (io.Reader, error) {
 
 func (zipArchive *ZipArchive) Write(io.Writer) error {
 	return nil
+}
+
+func (zipArchive *ZipArchive) Close() error {
+	return zipArchive.closer.Close()
 }

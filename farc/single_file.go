@@ -10,13 +10,15 @@ import (
 // NextFile(). Any subsequent calls return io.EOF
 type SingleFileArchive struct {
 	reader   io.Reader
+	closer   Closer
 	fileInfo FileInfo
 	done     bool
 }
 
-func newSFA(reader io.Reader, fileInfo FileInfo) *SingleFileArchive {
+func newSFA(reader io.Reader, closer Closer, fileInfo FileInfo) *SingleFileArchive {
 	return &SingleFileArchive{
 		reader:   reader,
+		closer:   closer,
 		fileInfo: fileInfo,
 		done:     false,
 	}
@@ -40,4 +42,8 @@ func (sfa *SingleFileArchive) NewFile(FileInfo) (io.Reader, error) {
 func (sfa *SingleFileArchive) Write(writer io.Writer) error {
 	_, err := io.Copy(writer, sfa.reader)
 	return err
+}
+
+func (sfa *SingleFileArchive) Close() error {
+	return sfa.closer.Close()
 }

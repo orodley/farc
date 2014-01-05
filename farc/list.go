@@ -18,6 +18,7 @@ func ListArchive(c *cli.Context) {
 		fmt.Println(err)
 		return
 	}
+	defer archive.Close()
 
 	for {
 		_, fi, err := archive.NextFile()

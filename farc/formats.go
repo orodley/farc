@@ -33,7 +33,7 @@ func NewArchive(filename string) (Archive, error) {
 		case "bz2":
 			reader = bzip2.NewReader(reader)
 		case "tar":
-			tarArchive, err := newTarArchive(reader)
+			tarArchive, err := newTarArchive(reader, file)
 			if err != nil {
 				return nil, err
 			} else {
@@ -45,7 +45,7 @@ func NewArchive(filename string) (Archive, error) {
 				return nil, err
 			}
 
-			zipArchive, err := newZipArchive(reader, stat.Size())
+			zipArchive, err := newZipArchive(reader, file, stat.Size())
 			if err != nil {
 				return nil, err
 			} else {
@@ -63,7 +63,7 @@ func NewArchive(filename string) (Archive, error) {
 	}
 	afi := makeAllFileInfo(fileInfo)
 	afi.name = base
-	return newSFA(reader, afi), nil
+	return newSFA(reader, file, afi), nil
 }
 
 // Exts is like path.Ext, but it detects if there are multiple extentions
