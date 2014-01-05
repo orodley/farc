@@ -5,6 +5,7 @@ import (
 	"github.com/orodley/cli"
 	"io"
 	"os"
+	"path/filepath"
 )
 
 // ExtractArchive implements the "extract"/"x" command
@@ -52,6 +53,18 @@ func ExtractArchive(c *cli.Context) {
 			}
 		} else {
 			flags := os.O_WRONLY | os.O_CREATE | os.O_EXCL
+			dir := filepath.Dir(fi.Name())
+			ex, err := exists(dir)
+			if err != nil {
+				fmt.Println(err)
+				return
+			}
+
+			// Make sure all its parent directories exist
+			if !ex {
+				os.MkdirAll(dir, 0770)
+			}
+
 			file, err := os.OpenFile(fi.Name(), flags, fi.Mode())
 			if err != nil {
 				fmt.Println(err)
