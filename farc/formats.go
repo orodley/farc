@@ -39,6 +39,18 @@ func NewArchive(filename string) (Archive, error) {
 			} else {
 				return tarArchive, nil
 			}
+		case "tgz": // = .tar.gz
+			reader, err = gzip.NewReader(reader)
+			if err != nil {
+				return nil, err
+			}
+
+			tarGzArchive, err := newTarArchive(reader, file)
+			if err != nil {
+				return nil, err
+			} else {
+				return tarGzArchive, nil
+			}
 		case "zip":
 			stat, err := file.Stat()
 			if err != nil {
